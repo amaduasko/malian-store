@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -48,15 +49,17 @@ const BgImage = styled.div`
   height: 100%;
 `;
 
-export default function MenuItem({
+const MenuItem = ({
   lg,
   md,
   xs,
   title,
   linkUrl,
   imageUrl,
-  size
-}) {
+  size,
+  history,
+  match
+}) => {
   const classes = useStyles();
 
   return (
@@ -66,6 +69,7 @@ export default function MenuItem({
         style={{
           height: `${size ? "380px" : "240px"}`
         }}
+        onClick={() => history.push(`${match.url}${linkUrl}`)}
       >
         <BgImage className="background-image" img={imageUrl} />
         <Box className={classes.content + " content"}>
@@ -79,4 +83,6 @@ export default function MenuItem({
       </Paper>
     </Grid>
   );
-}
+};
+
+export default withRouter(MenuItem);
