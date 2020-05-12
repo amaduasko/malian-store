@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 446,
   },
-  name: {},
+  name: {
+    fontWeight: 500,
+  },
   price: {},
 }))
 
