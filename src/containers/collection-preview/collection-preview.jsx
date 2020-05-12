@@ -5,6 +5,7 @@ import CollectionItem from '../../components/collection-Item/collection-item'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginBottom: 20,
   },
 }))
 
