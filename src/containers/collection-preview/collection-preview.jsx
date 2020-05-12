@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import CollectionPreviewItem from '../../components/collection-preview-Item/collection-preview-item'
+import CollectionItem from '../../components/collection-Item/collection-item'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
 
 const CollectionPreview = ({ title, items }) => {
   const classes = useStyles()
-  console.log(items)
   return (
     <div className='collection-preview '>
       <h1 className='title'>{title.toUpperCase()}</h1>
@@ -18,7 +17,7 @@ const CollectionPreview = ({ title, items }) => {
         {items
           ?.filter((item, index) => index < 4)
           .map((item) => (
-            <CollectionPreviewItem key={item.id} {...item} />
+            <CollectionItem key={item.id} {...item} />
           ))}
       </Grid>
     </div>

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   price: {},
 }))
 
-const CollectionPreviewItem = ({ imageUrl, name, price }) => {
+const CollectionItem = ({ imageUrl, name, price }) => {
   const classes = useStyles()
 
   return (
@@ -49,4 +49,4 @@ const CollectionPreviewItem = ({ imageUrl, name, price }) => {
   )
 }
 
-export default CollectionPreviewItem
+export default CollectionItem
