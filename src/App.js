@@ -9,7 +9,7 @@ import './App.scss'
 
 const useStyles = makeStyles((theme) => ({
   AppContainer: {
-    paddingTop: 20,
+    padding: '20 60',
     marginTop: 60,
   },
 }))
