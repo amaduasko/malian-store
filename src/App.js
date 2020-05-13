@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import HomePage from './pages/Home/Home.page'
 import ShopPage from './pages/Shop/Shop.page'
+import SignPage from './pages/Sign/Sign.page'
 import Header from './components/Header/header.component'
 import './App.scss'
 
@@ -23,6 +24,7 @@ function App() {
         <Container className={classes.AppContainer}>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
+          <Route path='/sign' component={SignPage} />
         </Container>
       </Switch>
     </div>

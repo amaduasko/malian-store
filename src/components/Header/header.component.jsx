@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
@@ -29,16 +29,28 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
     letterSpacing: 1.5,
     backgroundColor: '#283593',
+    border: '2px solid #283593',
     padding: '0.6rem 1.6rem',
     borderRadius: '0.5rem',
     '&:hover': {
-      backgroundColor: '#303f9f',
+      border: '2px solid #fff',
     },
   },
 }))
 
 const Header = () => {
   const classes = useStyles()
+  const [size, setSize] = useState(0)
+
+  const updateSize = () => setSize(window?.innerWidth)
+
+  useLayoutEffect(() => {
+    window.addEventListener('resize', updateSize)
+    updateSize()
+    return () => {
+      window.removeEventListener('resize', updateSize)
+    }
+  }, [])
 
   // const activeStyle = {
   //   fontWeight: 600,
@@ -49,7 +61,7 @@ const Header = () => {
     <div className={classes.root}>
       <AppBar position='fixed'>
         <Toolbar variant='dense'>
-          {window?.innerWidth <= 768 && (
+          {size <= 768 && (
             <IconButton
               edge='start'
               className={classes.menuButton}

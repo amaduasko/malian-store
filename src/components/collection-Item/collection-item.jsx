@@ -29,7 +29,7 @@ const CollectionItem = ({ imageUrl, name, price }) => {
   const classes = useStyles()
 
   return (
-    <Grid item sm>
+    <Grid item md sm={6} xs={12}>
       <Paper className={classes.paper} elevation={3}>
         <Card className={classes.root}>
           <CardActionArea>
