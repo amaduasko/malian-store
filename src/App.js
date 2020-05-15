@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { auth } from './firebase/firebase.utils'
 import { Route, Switch } from 'react-router-dom'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
@@ -16,10 +17,23 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function App() {
+  const [currentUser, setcurrentUser] = useState(null)
   const classes = useStyles()
+
+  useEffect(() => {
+    let unsubscribeFromAuth = auth.onAuthStateChanged((user) =>
+      setcurrentUser(user)
+    )
+    return () => {
+      unsubscribeFromAuth()
+    }
+  }, [])
+
+  console.log(currentUser)
+
   return (
     <div>
-      <Header />
+      <Header currentUser={currentUser} />
       <Switch>
         <Container className={classes.AppContainer}>
           <Route exact path='/' component={HomePage} />
