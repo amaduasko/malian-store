@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { auth, signInWithGoogle } from '../../firebase/firebase.utils'
+import { auth, createUserProfileDocument } from '../../firebase/firebase.utils'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import FormInput from '../form-input/form-input'
@@ -22,25 +22,38 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const SignIn = () => {
+const SignUp = () => {
     const classes = useStyles()
     const [values, setValues] = useState({
+        displayName: '',
         email: '',
         password: '',
+        confirmPassword: '',
     })
 
     const handleSubmit = async (event) => {
+        const { displayName, email, password, confirmPassword } = values
         event.preventDefault()
-        const { email, password } = values
+        if (password !== confirmPassword) {
+            alert("passwords don't match!!!")
+            return
+        }
 
         try {
-            await auth.signInWithEmailAndPassword(email, password)
+            const { user } = await auth.createUserWithEmailAndPassword(
+                email,
+                password
+            )
+
+            await createUserProfileDocument(user, { displayName })
             setValues({
+                displayName: '',
                 email: '',
                 password: '',
+                confirmPassword: '',
             })
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
@@ -52,7 +65,7 @@ const SignIn = () => {
     return (
         <div>
             <Typography className={classes.typo} variant='h5' gutterBottom>
-                Have already an account ?
+                I do not have an account
             </Typography>
             <Typography
                 className={classes.typo}
@@ -60,13 +73,23 @@ const SignIn = () => {
                 display='block'
                 gutterBottom
             >
-                Sign in with your email and password
+                Sign up with your email and password
             </Typography>
             <form
                 className={classes.root}
                 autoComplete='off'
                 onSubmit={handleSubmit}
             >
+                <FormInput
+                    className={classes.formInput}
+                    type='text'
+                    name='displayName'
+                    required
+                    fullWidth
+                    label='Display Name'
+                    value={values.displayName}
+                    onChange={handleChange}
+                />
                 <FormInput
                     className={classes.formInput}
                     type='email'
@@ -90,17 +113,20 @@ const SignIn = () => {
                     onChange={handleChange}
                     helperText="make sure it's hidden"
                 />
+                <FormInput
+                    className={classes.formInput}
+                    required
+                    fullWidth
+                    type='password'
+                    name='confirmPassword'
+                    label='confirm Password'
+                    value={values.confirmPassword}
+                    onChange={handleChange}
+                    helperText="make sure it's the same password"
+                />
                 <div className={classes.formButtonContainer}>
                     <Button type='submit' variant='contained' color='primary'>
-                        Sign In
-                    </Button>
-                    <Button
-                        type='button'
-                        onClick={signInWithGoogle}
-                        variant='contained'
-                        color='secondary'
-                    >
-                        Sign In with google
+                        Sign Up
                     </Button>
                 </div>
             </form>
@@ -108,4 +134,4 @@ const SignIn = () => {
     )
 }
 
-export default SignIn
+export default SignUp
