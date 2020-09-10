@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { setCurrentUser } from './redux/user/user.actions'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import HomePage from './pages/Home/Home.page'
@@ -16,8 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function App() {
-    const [currentUser, setcurrentUser] = useState(null)
+function App({ setCurrentUser, currentUser }) {
     const classes = useStyles()
 
     useEffect(() => {
@@ -26,10 +27,13 @@ function App() {
                 const userRef = await createUserProfileDocument(userAuth)
 
                 userRef.onSnapshot((snapShot) => {
-                    setcurrentUser({ id: snapShot.id, ...snapShot.data() })
+                    setCurrentUser({
+                        id: snapShot.id,
+                        ...snapShot.data(),
+                    })
                 })
             } else {
-                setcurrentUser(null)
+                setCurrentUser(userAuth)
             }
         })
         return () => {
@@ -37,20 +41,31 @@ function App() {
         }
     }, [])
 
-    console.log(currentUser)
-
     return (
         <div>
-            <Header currentUser={currentUser} />
+            <Header />
             <Switch>
                 <Container className={classes.AppContainer}>
                     <Route exact path='/' component={HomePage} />
                     <Route path='/shop' component={ShopPage} />
-                    <Route path='/sign' component={SignPage} />
+                    <Route
+                        exact
+                        path='/sign'
+                        render={() =>
+                            currentUser ? <Redirect to='/' /> : <SignPage />
+                        }
+                    />
                 </Container>
             </Switch>
         </div>
     )
 }
 
-export default App
+const mapStateToProps = ({ user }) => ({
+    currentUser: user.currentUser,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(App)
