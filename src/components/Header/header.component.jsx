@@ -13,6 +13,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Icon from '@material-ui/core/Icon'
+import CartIcon from '../cart-icon/cart-icon'
+import CartDropdown from '../cart-dropdown/cart-dropdown'
 import { connect } from 'react-redux'
 
 import { ReactComponent as Logo } from '../../assets/world.svg'
@@ -73,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, hidden }) => {
     const classes = useStyles()
     const [size, setSize] = useState(0)
     const [anchorEl, setAnchorEl] = useState(null)
@@ -216,7 +218,11 @@ const Header = ({ currentUser }) => {
                                     </Link>
                                 )}
                             </Grid>
+                            <Grid item>
+                                <CartIcon />
+                            </Grid>
                         </Grid>
+                        {!hidden && <CartDropdown />}
                     </Container>
                 </Toolbar>
             </AppBar>
@@ -224,8 +230,9 @@ const Header = ({ currentUser }) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    currentUser: state.user.currentUser,
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+    currentUser,
+    hidden,
 })
 
 export default connect(mapStateToProps)(Header)
