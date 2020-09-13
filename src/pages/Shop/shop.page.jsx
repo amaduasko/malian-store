@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import CollectionPreviewItem from '../../containers/collection-preview/collection-preview.conatiner'
 import { SHOP_DATA } from '../../constants/shopData'
-import CollectionPreview from '../../containers/collection-preview/collection-preview'
-
-const ShopPage = () => {
-  const [collections, setCollections] = useState(SHOP_DATA)
-  useEffect(() => {})
-  return (
-    <div className='shop-page'>
-      {collections.map(({ id, ...otherCollectionProps }) => (
-        <CollectionPreview key={id} {...otherCollectionProps} />
-      ))}
-    </div>
-  )
-}
+const ShopPage = () => (
+  <container>
+    {SHOP_DATA.map(({ title, items, id }) => (
+      <CollectionPreviewItem key={id} title={title} items={items} />
+    ))}
+  </container>
+)
 
 export default ShopPage
