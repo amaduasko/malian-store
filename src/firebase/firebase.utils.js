@@ -1,16 +1,16 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
-
+import { api_info } from '../config'
 const config = {
-    apiKey: 'AIzaSyC0Hxl-iDF9JP6QDvwicgXVXit8X3OKjVU',
-    authDomain: 'blown-db.firebaseapp.com',
-    databaseURL: 'https://blown-db.firebaseio.com',
-    projectId: 'blown-db',
-    storageBucket: 'blown-db.appspot.com',
-    messagingSenderId: '830720699325',
-    appId: '1:830720699325:web:a2c3b234812a56e0c580d4',
-    measurementId: 'G-SF93YY1CX3',
+    apiKey: api_info.API_KEY || '',
+    authDomain: api_info.AUTH_DOMAIN || '',
+    databaseURL: api_info.DATABASE_URL || '',
+    projectId: api_info.PROJECT_ID || '',
+    storageBucket: api_info.STORAGE_BUCKET || '',
+    messagingSenderId: api_info.MESSAGING_SENDER_ID || '',
+    appId: api_info.APP_ID || '',
+    measurementId: api_info.MEASUREMENT_ID || '',
 }
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
