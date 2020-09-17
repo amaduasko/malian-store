@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { addItem } from '../../redux/cart/cart.actions'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
@@ -44,8 +46,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const CollectionItem = ({ imageUrl, name, price }) => {
+const CollectionItem = ({ item, addItem }) => {
     const classes = useStyles()
+    const { imageUrl, name, price } = item
 
     return (
         <Grid item md sm={6} xs={12}>
@@ -66,6 +69,7 @@ const CollectionItem = ({ imageUrl, name, price }) => {
                     </CardActionArea>
                 </Card>
                 <Button
+                    onClick={() => addItem(item)}
                     className={classes.addToCardBtn + ' add-card-btn'}
                     variant='contained'
                 >
@@ -76,4 +80,7 @@ const CollectionItem = ({ imageUrl, name, price }) => {
     )
 }
 
-export default CollectionItem
+const mapDispatchToProps = (dispatch) => ({
+    addItem: (item) => dispatch(addItem(item)),
+})
+export default connect(null, mapDispatchToProps)(CollectionItem)
