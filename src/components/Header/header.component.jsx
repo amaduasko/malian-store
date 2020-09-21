@@ -16,6 +16,9 @@ import Icon from '@material-ui/core/Icon'
 import CartIcon from '../cart-icon/cart-icon'
 import CartDropdown from '../cart-dropdown/cart-dropdown'
 import { connect } from 'react-redux'
+import { selectCartHidden } from '../../redux/cart/cart.selector'
+import { selectCurrentUser } from '../../redux/user/user.selector'
+import { createStructuredSelector } from 'reselect'
 
 import { ReactComponent as Logo } from '../../assets/world.svg'
 
@@ -230,9 +233,9 @@ const Header = ({ currentUser, hidden }) => {
     )
 }
 
-const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
-    currentUser,
-    hidden,
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    hidden: selectCartHidden,
 })
 
 export default connect(mapStateToProps)(Header)
