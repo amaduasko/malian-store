@@ -5,17 +5,15 @@ import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
+import CardActions from '@material-ui/core/CardActions'
 import CardMedia from '@material-ui/core/CardMedia'
-import CardContent from '@material-ui/core/CardContent'
-import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
+import IconButton from '@material-ui/core/IconButton'
 import './collection-item.scss'
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        height: 500,
-        position: 'relative',
-    },
+    paper: {},
     root: {
         maxWidth: 345,
     },
@@ -24,25 +22,12 @@ const useStyles = makeStyles((theme) => ({
     },
     name: {
         fontWeight: 500,
+        fontSize: '16px',
     },
-    price: {},
-    addToCardBtn: {
-        display: 'none',
-        width: '80%',
-        backgroundColor: '#fff',
-        color: '#000',
-        fontWeight: 600,
-        letterSpacing: 1.2,
-        opacity: 0.7,
-        position: 'absolute',
-        top: 390,
-        right: 0,
-        left: 0,
-        margin: 'auto',
-        '&:hover': {
-            backgroundColor: '#000',
-            color: '#fff',
-        },
+    price: { fontSize: '16px' },
+    icon: {},
+    btn: {
+        padding: 5,
     },
 }))
 
@@ -52,29 +37,41 @@ const CollectionItem = ({ item, addItem }) => {
 
     return (
         <Grid item md sm={6} xs={12}>
-            <Paper className={classes.paper + ' card-paper'} elevation={3}>
+            <Paper className={classes.paper} elevation={3}>
                 <Card className={classes.root}>
-                    <CardActionArea>
-                        <CardMedia
-                            className={classes.media + ' media'}
-                            image={`${imageUrl}`}
-                            title={`${name}`}
-                        />
-                        <CardContent>
-                            <div className='collection-footer'>
+                    <CardMedia
+                        className={classes.media}
+                        image={`${imageUrl}`}
+                        title={`${name}`}
+                    />
+                    <CardActions>
+                        <Grid
+                            container
+                            justify='space-between'
+                            alignItems='center'
+                        >
+                            <Grid item>
                                 <span className={classes.name}>{name}</span>
+                            </Grid>
+                            <Grid item>
+                                <Tooltip
+                                    title='Add to card'
+                                    placement='top-start'
+                                >
+                                    <IconButton
+                                        className={classes.btn}
+                                        onClick={() => addItem(item)}
+                                        aria-label='add to card'
+                                    >
+                                        <AddShoppingCartIcon />
+                                    </IconButton>
+                                </Tooltip>
+
                                 <span className={classes.price}>${price}</span>
-                            </div>
-                        </CardContent>
-                    </CardActionArea>
+                            </Grid>
+                        </Grid>
+                    </CardActions>
                 </Card>
-                <Button
-                    onClick={() => addItem(item)}
-                    className={classes.addToCardBtn + ' add-card-btn'}
-                    variant='contained'
-                >
-                    Add to card
-                </Button>
             </Paper>
         </Grid>
     )

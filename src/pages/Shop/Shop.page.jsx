@@ -1,12 +1,16 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
 import Container from '@material-ui/core/Container'
-import CollectionPreviewItem from '../../containers/collection-preview/collection-preview'
-import SHOP_DATA from '../../constants/shopData'
-const ShopPage = () => (
+import CollectionPage from '../Collection/Collection.page'
+import CollectionsOverview from '../../containers/collections-overview/collections-overview'
+
+const ShopPage = ({ match }) => (
     <Container>
-        {SHOP_DATA.map(({ title, items, id }) => (
-            <CollectionPreviewItem key={id} title={title} items={items} />
-        ))}
+        <Route exact path={`${match.path}`} component={CollectionsOverview} />
+        <Route
+            path={`${match.path}/:collectionId`}
+            component={CollectionPage}
+        />
     </Container>
 )
 

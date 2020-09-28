@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
 import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -40,31 +41,41 @@ const CheckoutItemRow = ({ cartItem, clearItem, addItem, removeItem }) => {
             </TableCell>
             <TableCell>
                 <div>
-                    <IconButton
-                        color='primary'
-                        onClick={() => removeItem(cartItem)}
-                    >
-                        <ChevronLeftIcon />
-                    </IconButton>
+                    <Tooltip title='decrease' placement='top-start'>
+                        <IconButton
+                            color='primary'
+                            aria-label='decrease'
+                            onClick={() => removeItem(cartItem)}
+                        >
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </Tooltip>
+
                     <span className={classes.value}>{quantity}</span>
-                    <IconButton
-                        color='primary'
-                        onClick={() => addItem(cartItem)}
-                    >
-                        <ChevronRightRoundedIcon />
-                    </IconButton>
+                    <Tooltip title='increase' placement='top-start'>
+                        <IconButton
+                            color='primary'
+                            aria-label='increase'
+                            onClick={() => addItem(cartItem)}
+                        >
+                            <ChevronRightRoundedIcon />
+                        </IconButton>
+                    </Tooltip>
                 </div>
             </TableCell>
             <TableCell>
                 <span className={classes.value}>{price}</span>
             </TableCell>
             <TableCell>
-                <IconButton
-                    color='secondary'
-                    onClick={() => clearItem(cartItem)}
-                >
-                    <ClearIcon />
-                </IconButton>
+                <Tooltip title='remove' placement='top-start'>
+                    <IconButton
+                        color='secondary'
+                        aria-label='remove'
+                        onClick={() => clearItem(cartItem)}
+                    >
+                        <ClearIcon />
+                    </IconButton>
+                </Tooltip>
             </TableCell>
         </TableRow>
     )

@@ -15,7 +15,7 @@ import Header from './components/Header/header.component'
 import './App.scss'
 
 const useStyles = makeStyles((theme) => ({
-    AppContainer: {
+    appContainer: {
         padding: '20px 60px',
         marginTop: 60,
     },
@@ -47,8 +47,8 @@ function App({ setCurrentUser, currentUser }) {
     return (
         <div>
             <Header />
-            <Switch>
-                <Container className={classes.AppContainer}>
+            <Container className={classes.appContainer}>
+                <Switch>
                     <Route exact path='/' component={HomePage} />
                     <Route path='/shop' component={ShopPage} />
                     <Route exact path='/checkout' component={CheckoutPage} />
@@ -59,8 +59,8 @@ function App({ setCurrentUser, currentUser }) {
                             currentUser ? <Redirect to='/' /> : <SignPage />
                         }
                     />
-                </Container>
-            </Switch>
+                </Switch>
+            </Container>
         </div>
     )
 }
