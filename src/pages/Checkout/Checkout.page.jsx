@@ -15,6 +15,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+import StripeCheckoutButton from '../../components/stripe-button/stipeButton'
 import './checkout.style.scss'
 
 const useStyles = makeStyles({
@@ -32,7 +33,7 @@ const CheckoutPage = ({ cartItems, total }) => {
     const classes = useStyles()
     return (
         <>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
                 <Table className={classes.table} aria-label='checkout table'>
                     <TableHead>
                         <TableRow>
@@ -73,6 +74,20 @@ const CheckoutPage = ({ cartItems, total }) => {
             >
                 TOTAL : ${total}
             </Typography>
+            <Typography
+                variant='h6'
+                color='secondary'
+                style={{
+                    fontFamily: "'PT Sans', sans-serif",
+                    textAlign: 'center',
+                    marginBottom: '1rem',
+                }}
+            >
+                *Please use the following test credit card for payments*
+                <br />
+                4242 4242 4242 4242 - Exp: 01/21 - CVV: 123
+            </Typography>
+            <StripeCheckoutButton price={total} />
         </>
     )
 }
