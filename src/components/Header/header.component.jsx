@@ -20,7 +20,7 @@ import { selectCartHidden } from '../../redux/cart/cart.selector'
 import { selectCurrentUser } from '../../redux/user/user.selector'
 import { createStructuredSelector } from 'reselect'
 
-import { ReactComponent as Logo } from '../../assets/world.svg'
+import { ReactComponent as Logo } from '../../assets/timbuktu.svg'
 
 import './header.style.scss'
 
