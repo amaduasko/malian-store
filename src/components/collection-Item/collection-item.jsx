@@ -10,7 +10,6 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Tooltip from '@material-ui/core/Tooltip'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import IconButton from '@material-ui/core/IconButton'
-import './collection-item.scss'
 
 const useStyles = makeStyles((theme) => ({
     paper: {},
@@ -24,19 +23,19 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 500,
         fontSize: '16px',
     },
-    price: { fontSize: '16px' },
+    price: { fontSize: '16px', userSelect: 'none' },
     icon: {},
     btn: {
         padding: 5,
     },
 }))
 
-const CollectionItem = ({ item, addItem }) => {
+const CollectionItem = ({ item, addItem, ...otherProps }) => {
     const classes = useStyles()
     const { imageUrl, name, price } = item
 
     return (
-        <Grid item md sm={6} xs={12}>
+        <Grid item {...otherProps} sm={6} xs={12}>
             <Paper className={classes.paper} elevation={3}>
                 <Card className={classes.root}>
                     <CardMedia
@@ -55,7 +54,7 @@ const CollectionItem = ({ item, addItem }) => {
                             </Grid>
                             <Grid item>
                                 <Tooltip
-                                    title='Add to card'
+                                    title='Add to cart'
                                     placement='top-start'
                                 >
                                     <IconButton
