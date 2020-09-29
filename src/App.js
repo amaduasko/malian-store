@@ -42,7 +42,7 @@ function App({ setCurrentUser, currentUser }) {
         return () => {
             unsubscribeFromAuth()
         }
-    }, [])
+    })
 
     return (
         <div>
