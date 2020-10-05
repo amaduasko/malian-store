@@ -1,13 +1,18 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { createStructuredSelector } from 'reselect'
 
 import { selectCollectionsForPreview } from '../../redux/shop/shop.selector'
 import CollectionPreviewItem from '../collection-preview/collection-preview'
 import './collections-overview.style.scss'
 
-const CollectionsOverview = ({ collections }) => (
+import { selectIsCollectionFetching } from '../../redux/shop/shop.selector'
+
+import WithSpinner from '../../components/with-spinner/withSpinner'
+
+const CollectionsOverviewComponent = ({ collections }) => (
     <>
         {collections &&
             collections.map(({ title, items, id }) => (
@@ -18,6 +23,10 @@ const CollectionsOverview = ({ collections }) => (
 
 const mapStateToProps = createStructuredSelector({
     collections: selectCollectionsForPreview,
+    isLoading: selectIsCollectionFetching,
 })
-
-export default connect(mapStateToProps)(CollectionsOverview)
+const CollectionsOverview = compose(
+    connect(mapStateToProps),
+    WithSpinner
+)(CollectionsOverviewComponent)
+export default CollectionsOverview

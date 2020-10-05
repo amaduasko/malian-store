@@ -4,53 +4,31 @@ import { connect } from 'react-redux'
 import Container from '@material-ui/core/Container'
 import CollectionPage from '../Collection/Collection.page'
 import CollectionsOverview from '../../containers/collections-overview/collections-overview'
-import {
-    firestore,
-    convertCollectionSnapshotToMap,
-} from '../../firebase/firebase.utils'
 
-import { updateCollections } from '../../redux/shop/shop.actions'
+import { fetchCollectionsStart } from '../../redux/shop/shop.actions'
 
-import WithSpinner from '../../components/with-spinner/withSpinner'
-import collectionsOverview from '../../containers/collections-overview/collections-overview'
-
-const CollectionsOverviewWithSpinner = WithSpinner(collectionsOverview)
-const CollectionPageWithSpinner = WithSpinner(CollectionPage)
-
-const ShopPage = ({ match, updateCollections }) => {
+const ShopPage = ({ match, fetchCollectionsStart }) => {
     useEffect(() => {
-        const collectionRef = firestore.collection('collections')
-        let unsubscribeFromSnapshot = collectionRef.onSnapshot(
-            async (snapshot) => {
-                const collectionsMap = convertCollectionSnapshotToMap(snapshot)
-                updateCollections(collectionsMap)
-            }
-        )
-
-        return () => {
-            unsubscribeFromSnapshot()
-        }
+        fetchCollectionsStart()
     })
+
     return (
         <Container>
             <Route
                 exact
                 path={`${match.path}`}
-                render={(props) => (
-                    <CollectionsOverviewWithSpinner {...props} />
-                )}
+                component={CollectionsOverview}
             />
             <Route
                 path={`${match.path}/:collectionId`}
-                render={(props) => <CollectionPageWithSpinner {...props} />}
+                component={CollectionPage}
             />
         </Container>
     )
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    updateCollections: (collectionsMap) =>
-        dispatch(updateCollections(collectionsMap)),
+    fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 })
 
 export default connect(null, mapDispatchToProps)(ShopPage)

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function App({ setCurrentUser, currentUser, collectionsArray }) {
+function App({ setCurrentUser, currentUser }) {
     const classes = useStyles()
 
     useEffect(() => {
