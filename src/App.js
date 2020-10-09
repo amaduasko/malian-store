@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
-import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { setCurrentUser } from './redux/user/user.actions'
 import { createStructuredSelector } from 'reselect'
 import { selectCurrentUser } from './redux/user/user.selector'
+import { checkUserSession } from  './redux/user/user.actions'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import HomePage from './pages/Home/Home.page'
@@ -21,27 +20,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function App({ setCurrentUser, currentUser }) {
+function App({currentUser, checkUserSession }) {
     const classes = useStyles()
 
     useEffect(() => {
-        let unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-            if (userAuth) {
-                const userRef = await createUserProfileDocument(userAuth)
-
-                userRef.onSnapshot((snapShot) => {
-                    setCurrentUser({
-                        id: snapShot.id,
-                        ...snapShot.data(),
-                    })
-                })
-            } else {
-                setCurrentUser(userAuth)
-            }
-        })
-        return () => {
-            unsubscribeFromAuth()
-        }
+        checkUserSession()
     })
 
     return (
@@ -65,11 +48,14 @@ function App({ setCurrentUser, currentUser }) {
     )
 }
 
+
+const mapDispatchToProps = dispatch => ({
+    checkUserSession : () => dispatch(checkUserSession())
+})
+
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-})
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+
+export default connect(mapStateToProps,mapDispatchToProps)(App)

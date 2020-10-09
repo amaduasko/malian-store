@@ -61,6 +61,7 @@ const CollectionItem = ({ item, addItem, ...otherProps }) => {
                                         className={classes.btn}
                                         onClick={() => addItem(item)}
                                         aria-label='add to card'
+                                        color='primary'
                                     >
                                         <AddShoppingCartIcon />
                                     </IconButton>

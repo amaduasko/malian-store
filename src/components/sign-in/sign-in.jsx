@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { auth, signInWithGoogle } from '../../firebase/firebase.utils'
+import {googleSignInStart, emailSignInStart} from '../../redux/user/user.actions'
+import {connect} from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import FormInput from '../form-input/form-input'
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const SignIn = () => {
+const SignIn = ({googleSignInStart,emailSignInStart}) => {
     const classes = useStyles()
     const [values, setValues] = useState({
         email: '',
@@ -32,16 +33,8 @@ const SignIn = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         const { email, password } = values
+        emailSignInStart(email, password)
 
-        try {
-            await auth.signInWithEmailAndPassword(email, password)
-            setValues({
-                email: '',
-                password: '',
-            })
-        } catch (error) {
-            console.log(error)
-        }
     }
 
     const handleChange = (event) => {
@@ -96,7 +89,7 @@ const SignIn = () => {
                     </Button>
                     <Button
                         type='button'
-                        onClick={signInWithGoogle}
+                        onClick={googleSignInStart}
                         variant='contained'
                         color='secondary'
                     >
@@ -108,4 +101,9 @@ const SignIn = () => {
     )
 }
 
-export default SignIn
+
+const mapDispatchToProps = dispatch => ({
+    googleSignInStart: () => dispatch(googleSignInStart()),
+    emailSignInStart: (email, password) => dispatch(emailSignInStart({email, password}))
+})
+export default connect(null, mapDispatchToProps)(SignIn)
