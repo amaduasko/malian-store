@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { loadCSS } from 'fg-loadcss'
-import { auth } from '../../firebase/firebase.utils'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
@@ -19,6 +18,7 @@ import { connect } from 'react-redux'
 import { selectCartHidden } from '../../redux/cart/cart.selector'
 import { selectCurrentUser } from '../../redux/user/user.selector'
 import { createStructuredSelector } from 'reselect'
+import { signOutStart } from '../../redux/user/user.actions'
 
 import { ReactComponent as Logo } from '../../assets/timbuktu.svg'
 
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const Header = ({ currentUser, hidden }) => {
+const Header = ({ currentUser, hidden, signOut }) => {
     const classes = useStyles()
     const [size, setSize] = useState(0)
     const [anchorEl, setAnchorEl] = useState(null)
@@ -200,7 +200,7 @@ const Header = ({ currentUser, hidden }) => {
                                                     classes.menuItemSignout
                                                 }
                                                 onClick={() => {
-                                                    auth.signOut()
+                                                    signOut()
                                                     handleClose()
                                                 }}
                                             >
@@ -238,4 +238,8 @@ const mapStateToProps = createStructuredSelector({
     hidden: selectCartHidden,
 })
 
-export default connect(mapStateToProps)(Header)
+const mapDispatchToProps = (dispatch) => ({
+    signOut: () => dispatch(signOutStart()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { auth, createUserProfileDocument } from '../../firebase/firebase.utils'
+import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import FormInput from '../form-input/form-input'
 import Typography from '@material-ui/core/Typography'
+import { signUpStart } from '../../redux/user/user.actions'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const SignUp = () => {
+const SignUp = ({ signUp }) => {
     const classes = useStyles()
     const [values, setValues] = useState({
         displayName: '',
@@ -39,22 +40,7 @@ const SignUp = () => {
             return
         }
 
-        try {
-            const { user } = await auth.createUserWithEmailAndPassword(
-                email,
-                password
-            )
-
-            await createUserProfileDocument(user, { displayName })
-            setValues({
-                displayName: '',
-                email: '',
-                password: '',
-                confirmPassword: '',
-            })
-        } catch (error) {
-            console.error(error)
-        }
+        signUp({ displayName, email, password })
     }
 
     const handleChange = (event) => {
@@ -134,4 +120,8 @@ const SignUp = () => {
     )
 }
 
-export default SignUp
+const mapDispatchToProps = (dispatch) => ({
+    signUp: (userCredentials) => dispatch(signUpStart(userCredentials)),
+})
+
+export default connect(null, mapDispatchToProps)(SignUp)

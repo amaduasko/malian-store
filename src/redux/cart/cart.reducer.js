@@ -11,6 +11,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         ADD_ITEM,
         CLEAR_ITEM_FROM_CART,
         REMOVE_ITEM,
+        CLEAR_CART,
     } = CartActionTypes
     switch (action.type) {
         case TOGGLE_CART_HIDDEN:
@@ -38,6 +39,12 @@ const cartReducer = (state = INITIAL_STATE, action) => {
                 cartItems: state.cartItems.filter(
                     (cartItem) => cartItem.id !== action.payload.id
                 ),
+            }
+
+        case CLEAR_CART:
+            return {
+                ...state,
+                cartItems: [],
             }
 
         default:

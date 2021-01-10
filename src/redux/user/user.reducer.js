@@ -1,21 +1,46 @@
-import  UserActionTypes  from './user.types'
+import UserActionTypes from './user.types'
 
 const INITIAL_STATE = {
     currentUser: null,
-    error: null
+    error: null,
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
-    const {SIGN_IN_SUCCESS, SIGN_IN_FAILURE} = UserActionTypes
+    const {
+        SIGN_IN_SUCCESS,
+        SIGN_IN_FAILURE,
+        SIGN_OUT_FAILURE,
+        SIGN_OUT_SUCCESS,
+        SIGN_UP_FAILURE,
+    } = UserActionTypes
     switch (action.type) {
         case SIGN_IN_SUCCESS:
             return {
                 ...state,
                 currentUser: action.payload,
-                error: null
+                error: null,
+            }
+
+        case SIGN_OUT_SUCCESS:
+            return {
+                ...state,
+                currentUser: null,
+                error: null,
             }
 
         case SIGN_IN_FAILURE:
+            return {
+                ...state,
+                error: action.payload,
+            }
+
+        case SIGN_OUT_FAILURE:
+            return {
+                ...state,
+                error: action.payload,
+            }
+
+        case SIGN_UP_FAILURE:
             return {
                 ...state,
                 error: action.payload,
