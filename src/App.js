@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     appContainer: {
         padding: '20px 60px',
         marginTop: 60,
+        [theme.breakpoints.down('xs')]: {
+            padding: '20px 10px',
+        },
     },
 }))
 

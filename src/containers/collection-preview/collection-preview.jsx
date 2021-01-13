@@ -15,6 +15,11 @@ const useStyles = makeStyles((theme) => ({
         padding: '0.5rem 2rem',
         color: '#fff',
         borderRadius: '0px 30px 0px 30px',
+        [theme.breakpoints.down('xs')]: {
+            borderRadius: '30px 30px 0px 0px',
+            margin: 'auto',
+            marginBottom: 15,
+        },
     },
 }))
 

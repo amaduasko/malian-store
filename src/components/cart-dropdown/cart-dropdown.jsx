@@ -28,6 +28,7 @@ const CartDropdown = ({ cartItems, dispatch }) => {
                     history.push('/checkout')
                     dispatch(toggleCartHidden())
                 }}
+                disabled={!cartItems.length}
             >
                 GO TO CHECKOUT
             </Button>

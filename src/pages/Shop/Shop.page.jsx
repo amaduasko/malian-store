@@ -10,7 +10,7 @@ import { fetchCollectionsStart } from '../../redux/shop/shop.actions'
 const ShopPage = ({ match, fetchCollectionsStart }) => {
     useEffect(() => {
         fetchCollectionsStart()
-    })
+    }, [fetchCollectionsStart])
 
     return (
         <Container>

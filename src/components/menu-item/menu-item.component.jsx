@@ -30,14 +30,24 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#fff',
         opacity: '0.7',
         position: 'absolute',
+        [theme.breakpoints.down('xs')]: {
+            height: 70,
+            padding: '0 15px',
+        },
     },
     itemTitle: {
         fontSize: '22px',
         fontWeight: 'bold',
         color: '#4a4a4a',
+        [theme.breakpoints.down('xs')]: {
+            fontSize: 18,
+        },
     },
     itemSubtitle: {
         fontSize: '16px',
+        [theme.breakpoints.down('xs')]: {
+            fontSize: 14,
+        },
     },
 }))
 
@@ -52,6 +62,7 @@ const BgImage = styled.div`
 const MenuItem = ({
     lg,
     md,
+    sm,
     xs,
     title,
     linkUrl,
@@ -63,7 +74,14 @@ const MenuItem = ({
     const classes = useStyles()
 
     return (
-        <Grid item lg={size ? 6 : lg} md={md} xs={xs} className={classes.root}>
+        <Grid
+            item
+            lg={size ? 6 : lg}
+            md={size ? 6 : md}
+            sm={sm}
+            xs={xs}
+            className={classes.root}
+        >
             <Paper
                 className={classes.paper + ' mennu-item-paper'}
                 style={{

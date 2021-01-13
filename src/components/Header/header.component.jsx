@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react'
 import { loadCSS } from 'fg-loadcss'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
+import Drawer from '@material-ui/core/Drawer'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Container from '@material-ui/core/Container'
@@ -61,8 +62,21 @@ const useStyles = makeStyles((theme) => ({
             marginRight: '0.5rem',
             color: '#9fa8da',
         },
+
+        [theme.breakpoints.down(740)]: {
+            width: '50%',
+            margin: ' 5px 0',
+            padding: '3% 6%',
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '80%',
+            margin: ' 10px 0',
+            padding: '5% 8%',
+        },
     },
     userInfoContainer: {
+        display: 'flex',
+        justifyContent: 'center',
         padding: '0.6rem 1.6rem',
         backgroundColor: '#1a237e',
         borderRadius: '0.5rem',
@@ -70,16 +84,42 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             borderColor: '#fff',
         },
+
+        [theme.breakpoints.down(740)]: {
+            color: '#fff',
+            width: '50%',
+            margin: ' 5px 0',
+            padding: '3% 6%',
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '80%',
+            color: '#fff',
+            margin: ' 10px 0',
+            padding: '5% 8%',
+        },
     },
     userName: {
         fontWeight: 600,
         letterSpacing: 1.2,
         userSelect: 'none',
+        [theme.breakpoints.down(322)]: {
+            fontSize: 12,
+        },
+    },
+    mobileNav: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        backgroundColor: 'whitesmoke',
+        width: '50vw',
+        height: '100vh',
+        paddingTop: 64,
     },
 }))
 
 const Header = ({ currentUser, hidden, signOut }) => {
     const classes = useStyles()
+    const [isDrawerOpen, setIsDrawerOpen] = useState(null)
     const [size, setSize] = useState(0)
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
@@ -91,6 +131,8 @@ const Header = ({ currentUser, hidden, signOut }) => {
     const handleClose = () => {
         setAnchorEl(null)
     }
+
+    const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen)
 
     const updateSize = () => setSize(window?.innerWidth)
 
@@ -122,105 +164,231 @@ const Header = ({ currentUser, hidden, signOut }) => {
         <div className={classes.root}>
             <AppBar position='fixed'>
                 <Toolbar variant='dense'>
-                    {size <= 768 && (
-                        <IconButton
-                            edge='start'
-                            className={classes.menuButton}
-                            color='inherit'
-                            aria-label='menu'
-                        >
-                            <MenuIcon />
-                        </IconButton>
+                    {size <= 740 && (
+                        <Fragment>
+                            <IconButton
+                                edge='start'
+                                className={classes.menuButton}
+                                color='inherit'
+                                aria-label='menu'
+                                onClick={toggleDrawer}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Drawer
+                                anchor='left'
+                                open={isDrawerOpen}
+                                onClose={toggleDrawer}
+                            >
+                                <div className={classes.mobileNav}>
+                                    <Link className={classes.link} to='/shop'>
+                                        <Icon className='fab fa-shopify' />
+                                        SHOP
+                                    </Link>
+
+                                    <Link
+                                        className={classes.link}
+                                        to='/contact'
+                                    >
+                                        <Icon className='fas fa-id-badge' />
+                                        CONTACT
+                                    </Link>
+
+                                    {currentUser ? (
+                                        <div
+                                            className={
+                                                classes.userInfoContainer
+                                            }
+                                        >
+                                            <span className={classes.userName}>
+                                                {currentUser.displayName}
+                                            </span>
+                                            <IconButton
+                                                style={{
+                                                    paddingTop: 0,
+                                                    paddingBottom: 0,
+                                                }}
+                                                aria-label='account of current user'
+                                                aria-controls='menu-appbar'
+                                                aria-haspopup='true'
+                                                onClick={handleMenu}
+                                                color='inherit'
+                                            >
+                                                <AccountCircle />
+                                            </IconButton>
+                                            <Menu
+                                                id='menu-appbar'
+                                                anchorEl={anchorEl}
+                                                anchorOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                keepMounted
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                open={open}
+                                                onClose={handleClose}
+                                            >
+                                                <MenuItem
+                                                    className={classes.menuItem}
+                                                    onClick={handleClose}
+                                                >
+                                                    Profile
+                                                </MenuItem>
+                                                <MenuItem
+                                                    className={classes.menuItem}
+                                                    onClick={handleClose}
+                                                >
+                                                    My account
+                                                </MenuItem>
+                                                <MenuItem
+                                                    className={
+                                                        classes.menuItemSignout
+                                                    }
+                                                    onClick={() => {
+                                                        signOut()
+                                                        handleClose()
+                                                    }}
+                                                >
+                                                    <Icon
+                                                        style={{
+                                                            marginRight:
+                                                                '0.5rem ',
+                                                        }}
+                                                        className='fas fa-sign-out-alt'
+                                                    />
+                                                    Sign out
+                                                </MenuItem>
+                                            </Menu>
+                                        </div>
+                                    ) : (
+                                        <Link
+                                            className={classes.link}
+                                            to='/sign'
+                                        >
+                                            <Icon className='fas fa-sign-in-alt' />
+                                            Sign in
+                                        </Link>
+                                    )}
+                                </div>
+                            </Drawer>
+                        </Fragment>
                     )}
                     <Link to='/' className='logo-container'>
                         <Logo className='logo' />
                     </Link>
                     <Container className='options'>
                         <Grid container justify='flex-end' spacing={2}>
-                            <Grid item>
-                                <Link className={classes.link} to='/shop'>
-                                    <Icon className='fab fa-shopify' />
-                                    SHOP
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link className={classes.link} to='/contact'>
-                                    <Icon className='fas fa-id-badge' />
-                                    CONTACT
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                {currentUser ? (
-                                    <div className={classes.userInfoContainer}>
-                                        <span className={classes.userName}>
-                                            {currentUser.displayName}
-                                        </span>
-                                        <IconButton
-                                            style={{
-                                                paddingTop: 0,
-                                                paddingBottom: 0,
-                                            }}
-                                            aria-label='account of current user'
-                                            aria-controls='menu-appbar'
-                                            aria-haspopup='true'
-                                            onClick={handleMenu}
-                                            color='inherit'
+                            {size > 740 && (
+                                <Fragment>
+                                    <Grid item>
+                                        <Link
+                                            className={classes.link}
+                                            to='/shop'
                                         >
-                                            <AccountCircle />
-                                        </IconButton>
-                                        <Menu
-                                            id='menu-appbar'
-                                            anchorEl={anchorEl}
-                                            anchorOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            keepMounted
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            open={open}
-                                            onClose={handleClose}
+                                            <Icon className='fab fa-shopify' />
+                                            SHOP
+                                        </Link>
+                                    </Grid>
+                                    <Grid item>
+                                        <Link
+                                            className={classes.link}
+                                            to='/contact'
                                         >
-                                            <MenuItem
-                                                className={classes.menuItem}
-                                                onClick={handleClose}
-                                            >
-                                                Profile
-                                            </MenuItem>
-                                            <MenuItem
-                                                className={classes.menuItem}
-                                                onClick={handleClose}
-                                            >
-                                                My account
-                                            </MenuItem>
-                                            <MenuItem
+                                            <Icon className='fas fa-id-badge' />
+                                            CONTACT
+                                        </Link>
+                                    </Grid>
+                                    <Grid item>
+                                        {currentUser ? (
+                                            <div
                                                 className={
-                                                    classes.menuItemSignout
+                                                    classes.userInfoContainer
                                                 }
-                                                onClick={() => {
-                                                    signOut()
-                                                    handleClose()
-                                                }}
                                             >
-                                                <Icon
+                                                <span
+                                                    className={classes.userName}
+                                                >
+                                                    {currentUser.displayName}
+                                                </span>
+                                                <IconButton
                                                     style={{
-                                                        marginRight: '0.5rem ',
+                                                        paddingTop: 0,
+                                                        paddingBottom: 0,
                                                     }}
-                                                    className='fas fa-sign-out-alt'
-                                                />
-                                                Sign out
-                                            </MenuItem>
-                                        </Menu>
-                                    </div>
-                                ) : (
-                                    <Link className={classes.link} to='/sign'>
-                                        <Icon className='fas fa-sign-in-alt' />
-                                        Sign in
-                                    </Link>
-                                )}
-                            </Grid>
+                                                    aria-label='account of current user'
+                                                    aria-controls='menu-appbar'
+                                                    aria-haspopup='true'
+                                                    onClick={handleMenu}
+                                                    color='inherit'
+                                                >
+                                                    <AccountCircle />
+                                                </IconButton>
+                                                <Menu
+                                                    id='menu-appbar'
+                                                    anchorEl={anchorEl}
+                                                    anchorOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'right',
+                                                    }}
+                                                    keepMounted
+                                                    transformOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'right',
+                                                    }}
+                                                    open={open}
+                                                    onClose={handleClose}
+                                                >
+                                                    <MenuItem
+                                                        className={
+                                                            classes.menuItem
+                                                        }
+                                                        onClick={handleClose}
+                                                    >
+                                                        Profile
+                                                    </MenuItem>
+                                                    <MenuItem
+                                                        className={
+                                                            classes.menuItem
+                                                        }
+                                                        onClick={handleClose}
+                                                    >
+                                                        My account
+                                                    </MenuItem>
+                                                    <MenuItem
+                                                        className={
+                                                            classes.menuItemSignout
+                                                        }
+                                                        onClick={() => {
+                                                            signOut()
+                                                            handleClose()
+                                                        }}
+                                                    >
+                                                        <Icon
+                                                            style={{
+                                                                marginRight:
+                                                                    '0.5rem ',
+                                                            }}
+                                                            className='fas fa-sign-out-alt'
+                                                        />
+                                                        Sign out
+                                                    </MenuItem>
+                                                </Menu>
+                                            </div>
+                                        ) : (
+                                            <Link
+                                                className={classes.link}
+                                                to='/sign'
+                                            >
+                                                <Icon className='fas fa-sign-in-alt' />
+                                                Sign in
+                                            </Link>
+                                        )}
+                                    </Grid>
+                                </Fragment>
+                            )}
                             <Grid item>
                                 <CartIcon />
                             </Grid>

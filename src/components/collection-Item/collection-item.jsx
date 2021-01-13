@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
     paper: {},
     root: {
         maxWidth: 345,
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 'unset',
+        },
     },
     media: {
         height: 446,

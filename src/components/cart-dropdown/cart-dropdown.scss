@@ -28,3 +28,10 @@
     margin: 50px auto;
     color: black;
 }
+
+@media screen and (max-width: 800px){
+    .cart-dropdown {
+        top: 8vh;
+        right: 2vw;
+    }
+}
